@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/style.css') }}"
+    />
+    <title>會員系統</title>
+  </head>
+  <body>
+    <div class="header">歡迎光臨請註冊或登入網站{{ result }}</div>
+    <h3>會員登入</h3>
+    <form action="/signin" method="POST">
+      <br/ > 帳號
+      <input type="text" name="username" placeholder="請輸入帳號" />
+      <br/ > 密碼
+      <input
+        type="password"
+        name="password"
+        minlength="3"
+        maxlength="8"
+        placeholder="請輸入密碼"
+        required
+      />
+      <br/ > <br/ >
+      <button>登入</button>
+      <br/ > <br/ >
+    </form>
+    <hr />
+    <br/ >
+    <h3>尚未註冊？　點擊註冊</h3>
+    <br/ >
+    <form action="/signUp" method="POST">
+      姓名
+      <input
+        type="text"
+        name="name"
+        placeholder="請輸入真實姓名"
+        minlength="2"
+        maxlength="10"
+        required
+      />
+      <br/ > 帳號
+      <input type="text" name="username" placeholder="請輸入帳號" />
+      <br/ > 密碼
+      <input
+        type="password"
+        name="password"
+        minlength="4"
+        maxlength="8"
+        placeholder="請輸入密碼"
+        required
+      />
+      <br/ > <br/ >
+
+      <button>註冊</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/style.css') }}"
+    />
+    <title>會員頁面</title>
+  </head>
+  <body>
+    <script>
+      async function searchName() {
+        username = document.querySelector("#username").value;
+        const url = `/api/member?username=${username}`;
+        let data = await fetch(url);
+        let parseData = await data.json();
+
+        searchBox = document.querySelector("#searchBox");
+        p = document.createElement("p");
+        try {
+          searchBox.appendChild(p);
+          p.innerHTML =
+            parseData.data.name + " (" + parseData.data.username + ")";
+        } catch (err) {
+          searchBox.appendChild(p).innerHTML = "無此帳號";
+        }
+      }
+
+      async function changeName() {
+        const wantChange = document.querySelector("#changeName").value;
+        // const url = `/api/member?username=${wantChange}`;
+        const url = `/api/member`;
+        let result = await fetch(url, {
+          body: JSON.stringify({ name: wantChange }),
+          headers: { "Content-Type": "application/json" },
+          method: "PATCH",
+        });
+
+        let parseData = await result.json();
+        changeBox = document.querySelector(".changeBox");
+        changeResult = document.createElement("p");
+
+        if (parseData.ok == true) {
+          changeBox.appendChild(changeResult).innerHTML = "更新成功";
+          span = document.querySelector("#welcome");
+          span.innerHTML = wantChange;
+        } else {
+          changeBox.appendChild(changeResult).innerHTML = "更新失敗";
+        }
+      }
+    </script>
+    <div class="header">歡迎光臨，這是會員頁</div>
+    <h2>你好! <span id="welcome">{{ name }} </span> ，很高興見到你~</h2>
+    <br />
+    <div><a href="/signout">登出</a></div>
+    <br />
+    <h2>查詢會員姓名!!</h2>
+    <form action="member" method="POST">
+      <input
+        id="username"
+        type="text"
+        name="username"
+        placeholder="輸入查詢的會員帳號"
+        required
+      />
+      <button id="searchButton" type="button" onclick="searchName();">
+        查詢
+      </button>
+    </form>
+    <div id="searchBox"></div>
+
+    <hr />
+    <br />
+
+    <h2>更新我的姓名!!</h2>
+    <input
+      type="text"
+      name="changeName"
+      id="changeName"
+      placeholder="輸入新的姓名"
+    />
+    <button onclick="changeName();">更新</button>
+    <div class="changeBox"></div>
+
+    <br />
+    <hr />
+    <br />
+    <h2>快來留言吧!!</h2>
+    <form action="message" method="POST">
+      <input type="text" name="content" placeholder="請輸入留言" />
+      <button>送出</button>
+    </form>
+    {% for i in range( length ) %}
+    <div class="content">
+      <p>{{ messages[i][0] }} : {{ messages[i][1] }}</p>
+    </div>
+    {%endfor%}
+  </body>
+</html>
